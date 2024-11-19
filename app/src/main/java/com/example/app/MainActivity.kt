@@ -65,4 +65,4 @@ if (Build.VERSION.SDK_INT >= BUILD.VERSION_CODE.TIRAMISU){
     model = intent.getSerializableExtra("data", T::class.java)
 } else{
     model = intent.getSerializableExtra("data") as T?
-}*/
+}*/ㄴㅇ
