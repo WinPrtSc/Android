@@ -2,5 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="random">#ABCDEF01</color>
+    <color name="leaf">#ABCDEF01</color>
+    <color name="Greeny">#018177</color>
 </resources>

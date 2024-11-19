@@ -1,20 +1,34 @@
-package com.example.loginapp
+package com.example.app
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
-import com.example.app.R
+import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var loginButton: Button
+    private lateinit var tvCount: TextView
+    private lateinit var btnCount: Button
+    private lateinit var btnToast: Button
+    private lateinit var btnRandom: Button
+    private var count = 0
+
+    // Activity Result API 설정
+    private val randomActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            result.data?.getIntExtra("random_number", 0)?.let { randomNumber ->
+                count = randomNumber
+                tvCount.text = count.toString()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 레이아웃 선택 (LinearLayout, RelativeLayout, ConstraintLayout 중 하나 선택)
         setContentView(R.layout.activity_main)
 
         initializeViews()
@@ -22,55 +36,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeViews() {
-        emailEditText = findViewById(R.id.et_login_email)
-        passwordEditText = findViewById(R.id.et_login_password)
-        loginButton = findViewById(R.id.btn_login)
+        tvCount = findViewById(R.id.tv_count)
+        btnCount = findViewById(R.id.btn_count)
+        btnToast = findViewById(R.id.btn_toast)
+        btnRandom = findViewById(R.id.btn_random)
     }
 
     private fun setupListeners() {
-        loginButton.setOnClickListener {
-            val email = emailEditText.text.toString().trim()
-            val password = passwordEditText.text.toString().trim()
+        btnToast.setOnClickListener {
+            Toast.makeText(this, "현재 카운트: $count", Toast.LENGTH_SHORT).show()
+        }
 
-            when {
-                email.isEmpty() -> {
-                    emailEditText.error = "이메일을 입력해주세요"
-                    emailEditText.requestFocus()
-                }
-                !isValidEmail(email) -> {
-                    emailEditText.error = "올바른 이메일 형식이 아닙니다"
-                    emailEditText.requestFocus()
-                }
-                password.isEmpty() -> {
-                    passwordEditText.error = "비밀번호를 입력해주세요"
-                    passwordEditText.requestFocus()
-                }
-                password.length < 6 -> {
-                    passwordEditText.error = "비밀번호는 6자리 이상이어야 합니다"
-                    passwordEditText.requestFocus()
-                }
-                else -> {
-                    // TODO: 실제 로그인 로직 구현
-                    performLogin(email, password)
-                }
+        btnCount.setOnClickListener {
+            count++
+            tvCount.text = count.toString()
+        }
+
+        btnRandom.setOnClickListener {
+            val intent = Intent(this, RandomActivity::class.java).apply {
+                putExtra("max_count", count)
             }
+            randomActivityLauncher.launch(intent)
         }
     }
-    
-    private fun isValidEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    private fun performLogin(email: String, password: String) {
-        // 실제 로그인 로직을 구현할 수 있습니다.
-        // 예: API 호출, 데이터베이스 확인 등
-
-        // 임시 성공 메시지
-        Toast.makeText(
-            this,
-            "로그인 시도: $email",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
 }
-//모르겠어요
+/*
+if (Build.VERSION.SDK_INT >= BUILD.VERSION_CODE.TIRAMISU){
+    model = intent.getSerializableExtra("data", T::class.java)
+} else{
+    model = intent.getSerializableExtra("data") as T?
+}*/

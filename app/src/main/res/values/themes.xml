@@ -5,8 +5,8 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
     <style name="GreenStyle">
-        <item name="android:background" >#018177</item>
-        <item name="textBackground">@color/random</item>
+        <item name="android:background">@color/Greeny</item>
+        <item name="textBackground">@color/leaf</item>
     </style>
 
     <style name="Theme.App" parent="Base.Theme.App" />
