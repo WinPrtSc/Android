@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">App</string>
+    <string name="AddNewName">새로운 이름을 추가하세요.</string>
 </resources>
